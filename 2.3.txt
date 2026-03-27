@@ -1,0 +1,49 @@
+mysql> delimiter //
+mysql> create table customer__1(id int,name varchar(15),address varchar(15),city varchar(25),phno bigint); //
+Query OK, 0 rows affected (0.09 sec)
+
+mysql> create trigger updaterS
+    -> before update
+    -> on customer for each row
+    -> begin
+    -> insert into customer__1
+    -> values(old.id,old.name,old.address,old.city,old.ph_no);
+    -> end //
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> select * from customer; //
++----+-------+--------------+-----------+-----------+
+| id | name  | address      | city      | ph_no     |
++----+-------+--------------+-----------+-----------+
+| 31 | sneha | jew town     | kochi     | 998721124 |
+| 32 | maria | happy street | kochi     | 998776543 |
+| 33 | nika  | lightstreet  | kozhicode | 996565341 |
++----+-------+--------------+-----------+-----------+
+3 rows in set (0.00 sec)
+
+mysql> update customer set city='kannur' where id=32;
+    -> //
+Query OK, 1 row affected (0.03 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from customer__1; //
++------+-------+--------------+-------+-----------+
+| id   | name  | address      | city  | phno      |
++------+-------+--------------+-------+-----------+
+|   32 | maria | happy street | kochi | 998776543 |
++------+-------+--------------+-------+-----------+
+1 row in set (0.00 sec)
+
+mysql> select * from customer;
+    -> //
++----+-------+--------------+-----------+-----------+
+| id | name  | address      | city      | ph_no     |
++----+-------+--------------+-----------+-----------+
+| 31 | sneha | jew town     | kochi     | 998721124 |
+| 32 | maria | happy street | kannur    | 998776543 |
+| 33 | nika  | lightstreet  | kozhicode | 996565341 |
++----+-------+--------------+-----------+-----------+
+3 rows in set (0.00 sec)
+
+
+
